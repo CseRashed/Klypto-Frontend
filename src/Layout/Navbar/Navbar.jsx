@@ -6,8 +6,16 @@ import { HiMiniUserPlus } from 'react-icons/hi2'
 import { MdOutlineShoppingCart } from 'react-icons/md'
 import { FaRegUser } from 'react-icons/fa'
 import { Tooltip } from '@mui/material'
+import Drawer from "@mui/material/Drawer";
+import Button from "@mui/material/Button";
+import { useState } from "react";
 import { Link } from 'react-router-dom'
 export default function Navbar() {
+    const [open, setOpen] = useState(false);
+
+  const toggleDrawer = (state) => () => {
+    setOpen(state);
+  };
   return (
    <>
    <div className="w-full px-2 mt-6 pt-2 bg-blue-50 shadow-md top-0 z-50">
@@ -20,23 +28,44 @@ export default function Navbar() {
   />
 </div>
     <div className='flex gap-5'>
-<h1 className='sm:text-xl md:text-2xl'>
+<Link to={'/message'} className='sm:text-xl md:text-2xl'>
    <Tooltip title="Messages" placement="bottom">
 
     <LuMessageSquareMore className="text-2xl text-gray-600 hover:text-blue-900 cursor-pointer" />
    </Tooltip>
-</h1>
-<h1 className='sm:text-xl md:text-2xl'>
+</Link>
+<Link to={'/cart'} className='sm:text-xl md:text-2xl'>
  <Tooltip title="Cart" placement="top">
  <MdOutlineShoppingCart className="text-2xl text-gray-600 hover:text-blue-900 cursor-pointer" />
  </Tooltip>
 
-</h1>
-<h1 className='sm:text-xl md:text-2xl'>
-   <Tooltip title="Profile" placement="top">
-  <FaRegUser className="text-2xl text-gray-600 hover:text-blue-900 cursor-pointer" />
-   </Tooltip>
-</h1>
+</Link>
+<div>
+      <Link className="sm:text-xl md:text-2xl">
+        <Tooltip title="Profile" placement="top">
+          <FaRegUser
+            className="text-2xl text-gray-600 hover:text-blue-900 cursor-pointer"
+            onClick={toggleDrawer(true)} 
+          />
+        </Tooltip>
+      </Link>
+
+      {/* Drawer */}
+      <Drawer anchor="right" open={open} onClose={toggleDrawer(false)}>
+        <div className="w-64 p-4">
+          <h2 className="text-xl font-semibold mb-4">User Menu</h2>
+
+          <div className="flex flex-col gap-3">
+            <Button variant="contained" color="primary">
+              Login
+            </Button>
+            <Button variant="outlined" color="secondary">
+              Register
+            </Button>
+          </div>
+        </div>
+      </Drawer>
+    </div>
     </div>
    </div>
       <div className="mt-3 pb-2 flex flex-col sm:flex-row justify-between items-center gap-4">

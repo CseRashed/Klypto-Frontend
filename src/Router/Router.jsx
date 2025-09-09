@@ -3,6 +3,8 @@ import App from "../App";
 import Home from "../Pages/Home/Home";
 import Login from "../Pages/Login/Login";
 import Register from "../Pages/Register/Register";
+import Message from "../Components/Message/Message";
+import Cart from "../Components/Cart/Cart";
 
 function EmptyLayout({ children }) {
   return <>{children}</>;
@@ -26,6 +28,14 @@ const router = createBrowserRouter([
       {
         path:"/register",
         element:<Register></Register>
+      },
+      {
+        path:"/message",
+        element:<Message></Message>
+      },
+      {
+        path:"/cart",
+        element:<Cart></Cart>
       }
     ]
   }

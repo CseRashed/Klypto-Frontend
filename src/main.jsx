@@ -5,7 +5,6 @@ import './index.css';
 import router from './Router/Router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-// ✅ এখানে instance তৈরি করুন
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById('root')).render(
