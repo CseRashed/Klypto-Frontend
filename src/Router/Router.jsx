@@ -5,6 +5,7 @@ import Login from "../Pages/Login/Login";
 import Register from "../Pages/Register/Register";
 import Message from "../Components/Message/Message";
 import Cart from "../Components/Cart/Cart";
+import Checkout from "../Components/Checkout/Checkout";
 
 function EmptyLayout({ children }) {
   return <>{children}</>;
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
       {
         path:"/cart",
         element:<Cart></Cart>
+      },
+      {
+        path:'/checkout',
+        element:<Checkout></Checkout>
       }
     ]
   }
