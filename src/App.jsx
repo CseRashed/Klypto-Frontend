@@ -1,9 +1,25 @@
+import { Outlet, useLocation } from 'react-router-dom'
+import './App.css'
+import Footer from './Layout/Footer/Footer'
+import Header from './Layout/Header/Header'
+import Navbar from './Layout/Navbar/Navbar'
+
 function App() {
+  const location = useLocation();
+
+// If go to these routes, the main layout will not show.
+  const hideLayoutRoutes = ["/login", "/register"];
+
+  const shouldHideLayout = hideLayoutRoutes.includes(location.pathname);
 
   return (
     <>
-     <h1 className='text-red-300'>this is Klypto eccomerce</h1>
-    
+      {!shouldHideLayout && <Navbar />}
+      {!shouldHideLayout && <Header />}
+
+      <Outlet />
+
+      {!shouldHideLayout && <Footer />}
     </>
   )
 }
