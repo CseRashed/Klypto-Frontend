@@ -5,13 +5,15 @@ import { FaRegUser } from 'react-icons/fa';
 import { MdOutlineShoppingCart } from 'react-icons/md';
 import { Tooltip, Button } from '@mui/material';
 import Drawer from '@mui/material/Drawer';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaTrashAlt, FaPlus, FaMinus } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
+import { User, ShoppingBag, Heart, ShoppingCart, Home, CreditCard, Bell, HelpCircle, LogOut } from "lucide-react";
 
 export default function Navbar() {
   const [profileOpen, setProfileOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
+   const navigate = useNavigate();
 
   const [cartItems, setCartItems] = useState([
     { id: 1, name: "Wireless Headphones", brand: "Sony", price: 120, qty: 1, photo: "https://via.placeholder.com/80" },
@@ -41,7 +43,7 @@ export default function Navbar() {
         </div>
         <div className='flex gap-5 items-center'>
           <Link to={'/message'} className='sm:text-xl md:text-2xl'>
-            <Tooltip title="Messages" placement="bottom">
+            <Tooltip title="Messages" placement="top">
               <LuMessageSquareMore className="text-2xl text-gray-600 hover:text-blue-900 cursor-pointer" />
             </Tooltip>
           </Link>
@@ -78,16 +80,92 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Profile Drawer */}
-      <Drawer anchor="right" open={profileOpen} onClose={toggleProfileDrawer(false)}>
-        <div className="w-64 p-4">
-          <h2 className="text-xl font-semibold mb-4">User Menu</h2>
-          <div className="flex flex-col gap-3">
-            <Button variant="contained" color="primary">Login</Button>
-            <Button variant="outlined" color="secondary">Register</Button>
-          </div>
-        </div>
-      </Drawer>
+    
+{/* Profile Drawer */}
+<Drawer anchor="right" open={profileOpen} onClose={toggleProfileDrawer(false)}>
+  <div className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg h-full flex flex-col bg-white/90 backdrop-blur-lg shadow-xl">
+
+    {/* Header */}
+    <div className="flex items-center justify-between p-4 sm:p-5 border-b bg-blue-900 text-white">
+      <h2 className="text-base sm:text-lg md:text-xl font-semibold">My Account</h2>
+      <button
+        onClick={toggleProfileDrawer(false)}
+        className="hover:scale-110 transition-transform"
+      >
+        ✕
+      </button>
+    </div>
+
+    {/* User Info */}
+    <div className="flex items-center gap-3 sm:gap-4 p-4 border-b bg-white">
+      <img
+        src="https://i.pravatar.cc/100"
+        alt="User Avatar"
+        className="w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-blue-500 shadow-md"
+      />
+      <div>
+        <h3 className="font-semibold text-gray-800 text-sm sm:text-base md:text-lg">John Doe</h3>
+        <p className="text-xs sm:text-sm text-gray-500">johndoe@email.com</p>
+      </div>
+    </div>
+
+    {/* Menu Items */}
+    <nav className="flex-1 flex flex-col p-3 sm:p-4 gap-1 sm:gap-2 overflow-y-auto">
+      {[
+        { icon: <User size={18} />, label: "My Profile", route: "/profile" },
+    { icon: <ShoppingBag size={18} />, label: "My Orders", route: "/myOrder" },
+    { icon: <Bell size={18} />, label: "Notifications", route: "/notifications" },
+    { icon: <HelpCircle size={18} />, label: "Support", route: "/support" },
+      ].map((item, i) => (
+        <button
+          key={i}
+           onClick={() => item.route && navigate(item.route)}
+          className="flex items-center gap-3 sm:gap-4 px-3 sm:px-4 py-2 sm:py-3 rounded-lg sm:rounded-xl 
+                     text-gray-700 text-sm sm:text-base font-medium 
+                     hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100 hover:text-blue-700 
+                     transition-all group"
+        >
+          <span className="text-gray-500 group-hover:text-blue-600">{item.icon}</span>
+          {item.label}
+        </button>
+      ))}
+    </nav>
+
+    {/* Divider */}
+    <div className="border-t mx-3 sm:mx-4"></div>
+
+    {/* Auth Buttons */}
+    <div className="p-3 sm:p-4 flex flex-col gap-2 sm:gap-3">
+      <Button
+        variant="contained"
+        color="primary"
+        fullWidth
+        className="!rounded-full !py-2 sm:!py-3 !text-xs sm:!text-sm md:!text-base shadow-md hover:shadow-lg"
+      >
+        Login
+      </Button>
+      <Button
+        variant="outlined"
+        color="secondary"
+        fullWidth
+        className="!rounded-full !py-2 sm:!py-3 !text-xs sm:!text-sm md:!text-base"
+      >
+        Register
+      </Button>
+      <Button
+        variant="text"
+        color="error"
+        startIcon={<LogOut size={18} />}
+        fullWidth
+        className="!rounded-full !py-2 sm:!py-3 !text-xs sm:!text-sm md:!text-base hover:bg-red-50"
+      >
+        Logout
+      </Button>
+    </div>
+  </div>
+</Drawer>
+
+
 
       {/* Cart Drawer */}
       <Drawer anchor="right" open={cartOpen} onClose={toggleCartDrawer(false)}>

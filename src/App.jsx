@@ -8,7 +8,7 @@ function App() {
   const location = useLocation();
 
 // If go to these routes, the main layout will not show.
-  const hideLayoutRoutes = ["/login", "/register","/message","/cart","/checkout"];
+  const hideLayoutRoutes = ["/login", "/register","/message","/cart","/checkout","/profile","/myOrder","/notifications","/support"];
 
   const shouldHideLayout = hideLayoutRoutes.includes(location.pathname);
 

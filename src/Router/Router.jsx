@@ -6,7 +6,10 @@ import Register from "../Pages/Register/Register";
 import Message from "../Components/Message/Message";
 import Cart from "../Components/Cart/Cart";
 import Checkout from "../Components/Checkout/Checkout";
-
+import Profile from "../Dashboard/User/Profile/Profile";
+import MyOrder from "../Dashboard/User/MyOrder/MyOrder";
+import Notification from "../Dashboard/User/Notification/Notification";
+import CustomerSupport from "../Dashboard/User/CustomerSupport/CustomerSupport";
 function EmptyLayout({ children }) {
   return <>{children}</>;
 }
@@ -41,6 +44,21 @@ const router = createBrowserRouter([
       {
         path:'/checkout',
         element:<Checkout></Checkout>
+      },
+      {
+        path:'/profile',
+        element:<Profile></Profile>
+      },
+      {
+        path:'/myOrder',
+        element:<MyOrder></MyOrder>
+      },{
+        path:'/notifications',
+        element:<Notification></Notification>
+      },
+      {
+        path:'/support',
+        element:<CustomerSupport></CustomerSupport>
       }
     ]
   }
