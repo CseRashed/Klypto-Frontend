@@ -11,6 +11,11 @@ import MyOrder from "../Dashboard/User/MyOrder/MyOrder";
 import Notification from "../Dashboard/User/Notification/Notification";
 import CustomerSupport from "../Dashboard/User/CustomerSupport/CustomerSupport";
 import ProductDetails from "../Components/ProductDetails/ProductDetails";
+import UserManagement from "../Dashboard/Admin/UserManagement/UserManagement";
+import Order from "../Dashboard/Admin/Order/Order";
+import Sales from "../Dashboard/Admin/Sales/Sales";
+import Analytics from "../Dashboard/Admin/Analytics/Analytics";
+import Offers from "../Dashboard/Admin/Offers/Offers";
 function EmptyLayout({ children }) {
   return <>{children}</>;
 }
@@ -67,6 +72,26 @@ const router = createBrowserRouter([
   {
         path:'/products/:id',
         element:<ProductDetails></ProductDetails>
+    },
+    {
+      path:'/users',
+      element:<UserManagement></UserManagement>
+    },
+    {
+      path:'/orders',
+      element:<Order></Order>
+    },
+    {
+      path:'/sales',
+      element:<Sales></Sales>
+    },
+    {
+      path:'/analytics',
+      element:<Analytics></Analytics>
+    },
+    {
+      path:'/offers',
+      element:<Offers></Offers>
     }
 ])
 

@@ -116,6 +116,11 @@ export default function Navbar() {
     { icon: <ShoppingBag size={18} />, label: "My Orders", route: "/myOrder" },
     { icon: <Bell size={18} />, label: "Notifications", route: "/notifications" },
     { icon: <HelpCircle size={18} />, label: "Support", route: "/support" },
+    { icon: <HelpCircle size={18} />, label: "Analytics", route: "/analytics" },
+    { icon: <HelpCircle size={18} />, label: "Offers", route: "/offers" },
+    { icon: <HelpCircle size={18} />, label: "Users", route: "/users" },
+    { icon: <HelpCircle size={18} />, label: "Orders", route: "/orders" },
+    { icon: <HelpCircle size={18} />, label: "Sales", route: "/sales" },
       ].map((item, i) => (
         <button
           key={i}
