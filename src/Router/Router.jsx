@@ -10,6 +10,7 @@ import Profile from "../Dashboard/User/Profile/Profile";
 import MyOrder from "../Dashboard/User/MyOrder/MyOrder";
 import Notification from "../Dashboard/User/Notification/Notification";
 import CustomerSupport from "../Dashboard/User/CustomerSupport/CustomerSupport";
+import ProductDetails from "../Components/ProductDetails/ProductDetails";
 function EmptyLayout({ children }) {
   return <>{children}</>;
 }
@@ -59,9 +60,14 @@ const router = createBrowserRouter([
       {
         path:'/support',
         element:<CustomerSupport></CustomerSupport>
-      }
+      },
+       
     ]
-  }
+  },
+  {
+        path:'/products/:id',
+        element:<ProductDetails></ProductDetails>
+    }
 ])
 
 export default router

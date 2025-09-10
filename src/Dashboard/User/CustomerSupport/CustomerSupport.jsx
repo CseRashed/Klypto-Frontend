@@ -1,4 +1,4 @@
-// ✅ UPDATED Message.jsx
+
 import React, { useState, useEffect, useRef } from "react";
 import { FiSend, FiPhone, FiVideo } from "react-icons/fi";
 import { BiImageAdd } from "react-icons/bi";
