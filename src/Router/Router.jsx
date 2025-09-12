@@ -18,6 +18,7 @@ import Analytics from "../Dashboard/Admin/Analytics/Analytics";
 import Offers from "../Dashboard/Admin/Offers/Offers";
 import ProductManagement from "../Dashboard/CommonDashboard/ProductManagement/ProductManagement";
 import PaymentMethods from "../Dashboard/CommonDashboard/PaymentMethods/PaymentMethods";
+import Reviews from "../Dashboard/CommonDashboard/Reviews/Reviews";
 function EmptyLayout({ children }) {
   return <>{children}</>;
 }
@@ -102,6 +103,10 @@ const router = createBrowserRouter([
     {
       path:'/payments',
       element:<PaymentMethods></PaymentMethods>
+    },
+    {
+      path:'/reviews',
+      element:<Reviews></Reviews>
     }
 ])
 
