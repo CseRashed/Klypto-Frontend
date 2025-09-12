@@ -113,14 +113,21 @@ export default function Navbar() {
     <nav className="flex-1 flex flex-col p-3 sm:p-4 gap-1 sm:gap-2 overflow-y-auto">
       {[
         { icon: <User size={18} />, label: "My Profile", route: "/profile" },
+        { icon: <Bell size={18} />, label: "Dashboard", route: "/notifications" },
     { icon: <ShoppingBag size={18} />, label: "My Orders", route: "/myOrder" },
     { icon: <Bell size={18} />, label: "Notifications", route: "/notifications" },
+    { icon: <Bell size={18} />, label: "Products", route: "/products" },
+    { icon: <Bell size={18} />, label: "Payment Methods", route: "/notifications" },
     { icon: <HelpCircle size={18} />, label: "Support", route: "/support" },
     { icon: <HelpCircle size={18} />, label: "Analytics", route: "/analytics" },
     { icon: <HelpCircle size={18} />, label: "Offers", route: "/offers" },
     { icon: <HelpCircle size={18} />, label: "Users", route: "/users" },
     { icon: <HelpCircle size={18} />, label: "Orders", route: "/orders" },
     { icon: <HelpCircle size={18} />, label: "Sales", route: "/sales" },
+    { icon: <HelpCircle size={18} />, label: "My Review", route: "/sales" },
+    { icon: <HelpCircle size={18} />, label: "Chat", route: "/sales" },
+    { icon: <HelpCircle size={18} />, label: "Report", route: "/sales" },
+    { icon: <HelpCircle size={18} />, label: "System Settings", route: "/sales" },
       ].map((item, i) => (
         <button
           key={i}

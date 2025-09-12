@@ -16,6 +16,7 @@ import Order from "../Dashboard/Admin/Order/Order";
 import Sales from "../Dashboard/Admin/Sales/Sales";
 import Analytics from "../Dashboard/Admin/Analytics/Analytics";
 import Offers from "../Dashboard/Admin/Offers/Offers";
+import ProductManagement from "../Dashboard/CommonDashboard/ProductManagement/ProductManagement";
 function EmptyLayout({ children }) {
   return <>{children}</>;
 }
@@ -92,6 +93,10 @@ const router = createBrowserRouter([
     {
       path:'/offers',
       element:<Offers></Offers>
+    },
+    {
+      path:'/products',
+      element:<ProductManagement></ProductManagement>
     }
 ])
 
