@@ -117,7 +117,7 @@ export default function Navbar() {
     { icon: <ShoppingBag size={18} />, label: "My Orders", route: "/myOrder" },
     { icon: <Bell size={18} />, label: "Notifications", route: "/notifications" },
     { icon: <Bell size={18} />, label: "Products", route: "/products" },
-    { icon: <Bell size={18} />, label: "Payment Methods", route: "/notifications" },
+    { icon: <Bell size={18} />, label: "Payment Methods", route: "/payments" },
     { icon: <HelpCircle size={18} />, label: "Support", route: "/support" },
     { icon: <HelpCircle size={18} />, label: "Analytics", route: "/analytics" },
     { icon: <HelpCircle size={18} />, label: "Offers", route: "/offers" },
