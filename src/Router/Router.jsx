@@ -21,6 +21,7 @@ import PaymentMethods from "../Dashboard/CommonDashboard/PaymentMethods/PaymentM
 import Reviews from "../Dashboard/CommonDashboard/Reviews/Reviews";
 import Reports from "../Dashboard/CustomerSupport/Reports/Reports";
 import Settings from "../Dashboard/CustomerSupport/Settings/Settings";
+import AdminDashboard from "../Dashboard/CommonDashboard/Dashboard/Dashboard";
 function EmptyLayout({ children }) {
   return <>{children}</>;
 }
@@ -117,6 +118,10 @@ const router = createBrowserRouter([
     {
       path:'/settings',
       element:<Settings></Settings>
+    },
+    {
+      path:'/dashboard',
+      element:<AdminDashboard></AdminDashboard>
     }
 ])
 

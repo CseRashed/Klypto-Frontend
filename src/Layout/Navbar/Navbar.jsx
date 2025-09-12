@@ -113,7 +113,7 @@ export default function Navbar() {
     <nav className="flex-1 flex flex-col p-3 sm:p-4 gap-1 sm:gap-2 overflow-y-auto">
       {[
         { icon: <User size={18} />, label: "My Profile", route: "/profile" },
-        { icon: <Bell size={18} />, label: "Dashboard", route: "/notifications" },
+        { icon: <Bell size={18} />, label: "Dashboard", route: "/dashboard" },
     { icon: <ShoppingBag size={18} />, label: "My Orders", route: "/myOrder" },
     { icon: <Bell size={18} />, label: "Notifications", route: "/notifications" },
     { icon: <Bell size={18} />, label: "Products", route: "/products" },
