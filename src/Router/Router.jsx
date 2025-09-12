@@ -19,6 +19,7 @@ import Offers from "../Dashboard/Admin/Offers/Offers";
 import ProductManagement from "../Dashboard/CommonDashboard/ProductManagement/ProductManagement";
 import PaymentMethods from "../Dashboard/CommonDashboard/PaymentMethods/PaymentMethods";
 import Reviews from "../Dashboard/CommonDashboard/Reviews/Reviews";
+import Reports from "../Dashboard/CustomerSupport/Reports/Reports";
 function EmptyLayout({ children }) {
   return <>{children}</>;
 }
@@ -107,6 +108,10 @@ const router = createBrowserRouter([
     {
       path:'/reviews',
       element:<Reviews></Reviews>
+    },
+    {
+      path:'/reports',
+      element:<Reports></Reports>
     }
 ])
 
