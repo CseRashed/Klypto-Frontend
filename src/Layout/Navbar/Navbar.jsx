@@ -118,7 +118,6 @@ export default function Navbar() {
     { icon: <Bell size={18} />, label: "Notifications", route: "/notifications" },
     { icon: <Bell size={18} />, label: "Products", route: "/products" },
     { icon: <Bell size={18} />, label: "Payment Methods", route: "/payments" },
-    { icon: <HelpCircle size={18} />, label: "Support", route: "/support" },
     { icon: <HelpCircle size={18} />, label: "Analytics", route: "/analytics" },
     { icon: <HelpCircle size={18} />, label: "Offers", route: "/offers" },
     { icon: <HelpCircle size={18} />, label: "Users", route: "/users" },
@@ -126,8 +125,8 @@ export default function Navbar() {
     { icon: <HelpCircle size={18} />, label: "Sales", route: "/sales" },
     { icon: <HelpCircle size={18} />, label: "My Review", route: "/reviews" },
     { icon: <HelpCircle size={18} />, label: "Reports", route: "/reports" },
-    { icon: <HelpCircle size={18} />, label: "Report", route: "/sales" },
-    { icon: <HelpCircle size={18} />, label: "System Settings", route: "/sales" },
+    { icon: <HelpCircle size={18} />, label: "Support", route: "/support" },
+    { icon: <HelpCircle size={18} />, label: "System Settings", route: "/settings" },
       ].map((item, i) => (
         <button
           key={i}
