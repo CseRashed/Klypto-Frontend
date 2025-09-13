@@ -146,33 +146,35 @@ export default function Navbar() {
     <div className="border-t mx-3 sm:mx-4"></div>
 
     {/* Auth Buttons */}
-    <div className="p-3 sm:p-4 flex flex-col gap-2 sm:gap-3">
-      <Button
-        variant="contained"
-        color="primary"
-        fullWidth
-        className="!rounded-full !py-2 sm:!py-3 !text-xs sm:!text-sm md:!text-base shadow-md hover:shadow-lg"
+ <div className="p-3 sm:p-4 flex flex-col gap-2 sm:gap-3">
+      {/* Login */}
+      <Link
+        to="/login"
+        className="w-full text-center rounded-full py-2 sm:py-3 text-xs sm:text-sm md:text-base 
+        bg-blue-600 text-white shadow-md hover:shadow-lg hover:bg-blue-700 transition"
       >
         Login
-      </Button>
-      <Button
-        variant="outlined"
-        color="secondary"
-        fullWidth
-        className="!rounded-full !py-2 sm:!py-3 !text-xs sm:!text-sm md:!text-base"
+      </Link>
+
+      {/* Register */}
+      <Link
+        to="/register"
+        className="w-full text-center rounded-full py-2 sm:py-3 text-xs sm:text-sm md:text-base 
+        border border-blue-600 text-blue-600 hover:bg-blue-50 transition"
       >
         Register
-      </Button>
-      <Button
-        variant="text"
-        color="error"
-        startIcon={<LogOut size={18} />}
-        fullWidth
-        className="!rounded-full !py-2 sm:!py-3 !text-xs sm:!text-sm md:!text-base hover:bg-red-50"
+      </Link>
+
+      {/* Logout */}
+      <button
+        className="w-full flex items-center justify-center gap-2 rounded-full py-2 sm:py-3 
+        text-xs sm:text-sm md:text-base text-red-600 hover:bg-red-50 transition"
       >
+        <LogOut size={18} />
         Logout
-      </Button>
+      </button>
     </div>
+  
   </div>
 </Drawer>
 
