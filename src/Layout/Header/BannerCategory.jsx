@@ -27,7 +27,7 @@ export default function BannerCategory() {
   ];
 
   return (
-  <div className='mt-6  bg-blue-50'>
+  <div className='mt-6 container mx-auto bg-blue-50'>
     <hr />
       <div className="px-2 py-5  relative">
     <Swiper

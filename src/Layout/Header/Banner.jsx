@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -14,6 +14,8 @@ import subSlider2 from './../../assets/BannerSlider/sub-banner-2.jpg';
 // import BannerCategory from './BannerCategory';
 
 export default function Banner() {
+  const swiperRef = useRef(null);
+
   const slideText = (
     <div className="absolute top-5 left-5 md:top-10 md:left-[100px] lg:left-[150px] bg-white/80 p-2 md:p-4 rounded-md shadow-md max-w-[90%] sm:max-w-[70%] md:max-w-[60%]">
       <p className="text-sm md:text-lg">Big Saving Days Sale</p>
@@ -26,67 +28,49 @@ export default function Banner() {
       </button>
     </div>
   );
-
   return (
-  <div className='bg-blue-50 py-5 px-2 mt-5'>
+  <div className='container mx-auto bg-blue-50 py-5 px-2 mt-5'>
       <div className="container mx-auto  ">
       <div className="flex flex-col lg:flex-row gap-6">
         {/* Main Slider */}
         <div className="relative w-full lg:w-3/4">
-          <Swiper
-            modules={[Navigation, Pagination, Scrollbar, A11y]}
-            spaceBetween={20}
-            slidesPerView={1}
-            navigation
-            pagination={{ clickable: true }}
-            scrollbar={{ draggable: true }}
-          >
-            <SwiperSlide>
-              <div className="relative">
-                <img
-                  src={slide1}
-                  alt="Slide 1"
-                  className="w-full h-auto rounded-md transition-all duration-300 ease-in-out hover:scale-[1.02]"
-                />
-                {slideText}
-              </div>
-            </SwiperSlide>
-            <SwiperSlide>
-              <div className="relative">
-                <img
-                  src={slide2}
-                  alt="Slide 2"
-                  className="w-full h-auto rounded-md transition-all duration-300 ease-in-out hover:scale-[1.02]"
-                />
-                {slideText}
-              </div>
-            </SwiperSlide>
-            <SwiperSlide>
-              <div className="relative">
-                <img
-                  src={slide2}
-                  alt="Slide 2"
-                  className="w-full h-auto rounded-md transition-all duration-300 ease-in-out hover:scale-[1.02]"
-                />
-                {slideText}
-              </div>
-            </SwiperSlide>
-            <SwiperSlide>
-              <div className="relative">
-                <img
-                  src={slide2}
-                  alt="Slide 2"
-                  className="w-full h-auto rounded-md transition-all duration-300 ease-in-out hover:scale-[1.02]"
-                />
-                {slideText}
-              </div>
-            </SwiperSlide>
-          </Swiper>
-        </div>
+            <Swiper
+              onSwiper={(swiper) => (swiperRef.current = swiper)}
+              spaceBetween={20}
+              slidesPerView={1}
+            >
+              {[slide1, slide2, slide2, slide2].map((img, idx) => (
+                <SwiperSlide key={idx}>
+                  <div className="relative">
+                    <img
+                      src={img}
+                      alt={`Slide ${idx}`}
+                      className="w-full h-[180px] sm:h-[250px] md:h-[300px] lg:h-auto rounded-md transition-all duration-300 ease-in-out hover:scale-[1.02]"
+                    />
+                    {slideText}
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+
+            {/* Custom Arrows */}
+            <button
+              onClick={() => swiperRef.current?.slidePrev()}
+              className="absolute top-1/2 left-2 transform -translate-y-1/2 z-20 bg-white/70 rounded-full p-2 sm:p-3 hover:bg-white"
+            >
+              <span className="text-xl sm:text-2xl">&#10094;</span>
+            </button>
+            <button
+              onClick={() => swiperRef.current?.slideNext()}
+              className="absolute top-1/2 right-2 transform -translate-y-1/2 z-20 bg-white/70 rounded-full p-2 sm:p-3 hover:bg-white"
+            >
+              <span className="text-xl sm:text-2xl">&#10095;</span>
+            </button>
+          </div>
 
         {/* Sub Sliders */}
         <div className="w-full relative lg:w-1/4  flex justify-between flex-col gap-5">
-        <div className="w-full relative rounded-md overflow-hidden group">
+        <div className="w-fullz relative rounded-md overflow-hidden group">
   <img
     src={subSlider1}
     alt="Sub 1"

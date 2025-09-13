@@ -36,7 +36,7 @@ export default function Navbar() {
   const total = cartItems.reduce((acc, item) => acc + item.price * item.qty, 0);
 
   return (
-    <div className="w-full px-2 mt-6 pt-2 bg-blue-50 shadow-md top-0 z-50">
+    <div className="container mx-auto px-2 mt-6 pt-2 bg-blue-50 shadow-md top-0 z-50">
       <div className='flex justify-between items-center'>
         <div>
           <img src={logo} alt="Logo" className="w-10 sm:w-16 lg:w-20" />
