@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useProducts from "../../Hooks/useProducts";
 
 export default function PopularProducts() {
@@ -21,11 +21,6 @@ export default function PopularProducts() {
       const scrollAmount = window.innerWidth < 768 ? 240 : 300;
       slider.scrollLeft += dir === "left" ? -scrollAmount : scrollAmount;
     }
-  };
-
-  // Navigate to product details
-  const handleProduct = (id) => {
-    navigate(`products/${id}`);
   };
 
   return (
@@ -90,8 +85,8 @@ export default function PopularProducts() {
                 key={product._id}
                 className="flex-shrink-0 w-48 sm:w-56 md:w-60 lg:w-64 snap-start"
               >
-                <div
-                  onClick={() => handleProduct(product._id)}
+                <Link
+                  to={`/products/${product._id}`} 
                   className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-xl transition"
                 >
                   <div className="bg-gray-100 h-28 flex items-center justify-center">
@@ -107,7 +102,7 @@ export default function PopularProducts() {
                     <p className="text-yellow-500 text-sm">★★★★☆</p>
                     <p className="text-green-600 font-bold">${product.price}</p>
                   </div>
-                </div>
+                </Link>
               </div>
             ))}
         </div>

@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useProducts from "../../Hooks/useProducts";
 
 export default function FeaturedProducts() {
@@ -25,10 +25,7 @@ export default function FeaturedProducts() {
     }
   };
 
-  // Navigate to product details page
-  const handleProduct = (id) => {
-    navigate(`/products/${id}`);
-  };
+
 
   return (
     <div className="container mx-auto mt-7 lg:mt-16 md:mt-10">
@@ -74,8 +71,8 @@ export default function FeaturedProducts() {
                 key={product._id}
                 className="snap-start flex-shrink-0 w-52 sm:w-56 md:w-60 lg:w-64"
               >
-                <div
-                  onClick={() => handleProduct(product._id)}
+                <Link
+                  to={`/products/${product._id}`} 
                   className="card bg-white shadow-md rounded-lg cursor-pointer hover:shadow-xl transition"
                 >
                   <div className="bg-gray-100 h-28 flex items-center justify-center">
@@ -95,7 +92,7 @@ export default function FeaturedProducts() {
                     <p className="text-yellow-500 text-sm">★★★★☆</p>
                     <p className="text-green-600 font-bold">${product.price}</p>
                   </div>
-                </div>
+                </Link>
               </div>
             ))}
         </div>

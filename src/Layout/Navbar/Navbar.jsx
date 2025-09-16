@@ -25,8 +25,10 @@ export default function Navbar() {
   useEffect(() => {
     const fetchCarts = async () => {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_API_URL}/carts`);
+       if(user?.email){
+         const res = await axios.get(`${import.meta.env.VITE_API_URL}/carts/${user.email}`);
         setCarts(res.data);
+       }
       } catch (err) {
         console.error("Error fetching carts:", err);
       }
