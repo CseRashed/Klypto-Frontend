@@ -1,14 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { FaLock, FaEnvelope, FaUser, FaEye, FaEyeSlash } from "react-icons/fa";
 import { motion } from "framer-motion";
+import Swal from "sweetalert2";
+import useAuth from "../../Hooks/useAuth";
+ // ✅ apnar useAuth hook er path thik kore den
 
 const Register = () => {
+  const { handleRegister, handleGoogleSignIn } = useAuth();
+  const navigate = useNavigate();
+
   const [showPassword, setShowPassword] = useState(false);
   const [particles, setParticles] = useState([]);
+  const [form, setForm] = useState({ name: "", email: "", password: "" });
 
-  // Generate particles for background
+  // Generate background particles
   useEffect(() => {
     const p = Array.from({ length: 20 }, () => ({
       size: Math.random() * 20 + 10,
@@ -20,9 +27,36 @@ const Register = () => {
     setParticles(p);
   }, []);
 
+  // Handle input change
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  // Handle form submit
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const { email, password } = form;
+    if (password.length < 6) {
+      return Swal.fire("Error!", "Password must be at least 6 characters", "error");
+    }
+
+    handleRegister(email, password)
+    
+    
+  }
+  // Handle Google Sign-in
+  const handleGoogle = async () => {
+    try {
+      await handleGoogleSignIn();
+      Swal.fire("Success!", "Logged in with Google", "success");
+      navigate("/");
+    } catch (error) {
+      Swal.fire("Error!", error.message, "error");
+    }
+  };
+
   return (
     <div className="relative flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black p-4 overflow-hidden">
-      
       {/* Background particles */}
       {particles.map((p, index) => (
         <div
@@ -54,13 +88,16 @@ const Register = () => {
         </p>
 
         {/* Form */}
-        <form className="space-y-4 sm:space-y-5">
+        <form className="space-y-4 sm:space-y-5" onSubmit={handleSubmit}>
           {/* Full Name */}
           <div className="relative group">
             <FaUser className="absolute top-3 left-3 text-gray-400 group-focus-within:text-purple-400 transition-colors" />
             <input
               type="text"
+              name="name"
               placeholder="John Doe"
+              value={form.name}
+              onChange={handleChange}
               className="w-full pl-10 pr-4 py-2.5 sm:py-3 rounded-xl bg-white/20 border border-gray-400/30 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-400 transition-all"
               required
             />
@@ -71,7 +108,10 @@ const Register = () => {
             <FaEnvelope className="absolute top-3 left-3 text-gray-400 group-focus-within:text-blue-400 transition-colors" />
             <input
               type="email"
+              name="email"
               placeholder="you@example.com"
+              value={form.email}
+              onChange={handleChange}
               className="w-full pl-10 pr-4 py-2.5 sm:py-3 rounded-xl bg-white/20 border border-gray-400/30 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 transition-all"
               required
             />
@@ -82,7 +122,10 @@ const Register = () => {
             <FaLock className="absolute top-3 left-3 text-gray-400 group-focus-within:text-blue-400 transition-colors" />
             <input
               type={showPassword ? "text" : "password"}
+              name="password"
               placeholder="••••••••"
+              value={form.password}
+              onChange={handleChange}
               className="w-full pl-10 pr-10 py-2.5 sm:py-3 rounded-xl bg-white/20 border border-gray-400/30 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-400 transition-all"
               required
             />
@@ -107,6 +150,7 @@ const Register = () => {
         {/* Google Register */}
         <motion.button
           whileTap={{ scale: 0.97 }}
+          onClick={handleGoogle}
           className="w-full mt-4 flex items-center justify-center gap-2 bg-white text-gray-800 py-2.5 sm:py-3 rounded-xl font-semibold shadow-md hover:shadow-lg hover:bg-gray-100 transition-all duration-300"
         >
           <FcGoogle className="text-xl" />

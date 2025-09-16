@@ -1,40 +1,10 @@
 import React, { useState } from "react";
 import { FaStar } from "react-icons/fa";
-
-// Sample static review data
-const reviewsData = [
-  {
-    id: 1,
-    name: "John Doe",
-    rating: 5,
-    comment: "Amazing product! Highly recommend.",
-    image: "https://i.pravatar.cc/100?img=1",
-  },
-  {
-    id: 2,
-    name: "Jane Smith",
-    rating: 4,
-    comment: "Good quality and fast delivery.",
-    image: "https://i.pravatar.cc/100?img=2",
-  },
-  {
-    id: 3,
-    name: "Alice Johnson",
-    rating: 3,
-    comment: "Product was okay, could be better.",
-    image: "https://i.pravatar.cc/100?img=3",
-  },
-  {
-    id: 4,
-    name: "Bob Williams",
-    rating: 5,
-    comment: "Excellent service and product quality!",
-    image: "https://i.pravatar.cc/100?img=4",
-  },
-];
+import useReviews from "../../../Hooks/useReviews";
 
 export default function Reviews() {
-  const [reviews, setReviews] = useState(reviewsData);
+   const { reviews, isLoading, isError } = useReviews()
+   console.log(reviews)
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen space-y-8">

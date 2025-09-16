@@ -1,24 +1,23 @@
 import React, { useState } from "react";
 import { FaEdit, FaTrash, FaPlus } from "react-icons/fa";
+import useProducts from "../../../Hooks/useProducts";
 
 // 🔹 Dummy logged-in user (role = "superadmin" | "admin" | "seller" | "user")
 const currentUser = { id: 2, role: "seller" };
 
 export default function ProductManagement() {
-  const [products, setProducts] = useState([
-    { id: 1, name: "Wireless Headphones", sellerId: 2, price: 120, status: "Approved" },
-    { id: 2, name: "Smartphone", sellerId: 3, price: 500, status: "Approved" },
-    { id: 3, name: "Gaming Mouse", sellerId: 2, price: 40, status: "Pending" },
-  ]);
-
+    const { products: allProducts, isLoading, isError, error } = useProducts();
+  
+  // const [allProducts, setProducts] = useState();
+console.log(allProducts)
   // Filtering by role
   const visibleProducts =
     currentUser.role === "superadmin" || currentUser.role === "admin"
-      ? products
+      ? allProducts
       : currentUser.role === "seller"
-      ? products.filter((p) => p.sellerId === currentUser.id)
-      : products.filter((p) => p.status === "Approved");
-
+      ? allProducts.filter((p) => p.sellerId === currentUser.id)
+      : allProducts.filter((p) => p.status === "Approved");
+console.log(visibleProducts)
   const handleDelete = (id) => setProducts(products.filter((p) => p.id !== id));
   const handleEdit = (id) => alert(`Edit Product #${id}`);
   const handleAdd = () => alert("Open Add Product Form");
@@ -53,7 +52,7 @@ export default function ProductManagement() {
             </tr>
           </thead>
           <tbody>
-            {visibleProducts.map((p) => (
+            {allProducts.map((p) => (
               <tr key={p.id} className="border-b hover:bg-gray-50">
                 <td className="py-3 px-4">#{p.id}</td>
                 <td className="py-3 px-4 font-medium">{p.name}</td>

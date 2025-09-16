@@ -13,15 +13,17 @@ import {
   FileWarning,
   ClipboardList,
 } from "lucide-react";
-
+import useUsers from "../../../Hooks/useUsers";
 const Dashboard = () => {
   const [darkMode, setDarkMode] = useState(false);
+  const { users, isLoading, isError } = useUsers()
 
+
+  // console.log(users)
   return (
     <div
-      className={`min-h-screen p-6 transition-colors ${
-        darkMode ? "bg-gray-900 text-gray-100" : "bg-gray-50 text-gray-900"
-      }`}
+      className={`min-h-screen p-6 transition-colors ${darkMode ? "bg-gray-900 text-gray-100" : "bg-gray-50 text-gray-900"
+        }`}
     >
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
@@ -70,7 +72,7 @@ const Dashboard = () => {
       {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {[
-          { title: "Total Users", value: "1,245", icon: <Users size={26} />, color: "bg-blue-500" },
+          { title: "Total Users", value: `${users.length}`, icon: <Users size={26} />, color: "bg-blue-500" },
           { title: "Total Orders", value: "3,582", icon: <Package size={26} />, color: "bg-green-500" },
           { title: "Revenue", value: "$24,560", icon: <DollarSign size={26} />, color: "bg-purple-500" },
           { title: "Support Tickets", value: "76", icon: <Headphones size={26} />, color: "bg-orange-500" },
@@ -114,13 +116,12 @@ const Dashboard = () => {
                   <td>{order.amount}</td>
                   <td>
                     <span
-                      className={`px-2 py-1 rounded-full text-xs ${
-                        order.status === "Completed"
+                      className={`px-2 py-1 rounded-full text-xs ${order.status === "Completed"
                           ? "bg-green-100 text-green-600"
                           : order.status === "Pending"
-                          ? "bg-yellow-100 text-yellow-600"
-                          : "bg-red-100 text-red-600"
-                      }`}
+                            ? "bg-yellow-100 text-yellow-600"
+                            : "bg-red-100 text-red-600"
+                        }`}
                     >
                       {order.status}
                     </span>

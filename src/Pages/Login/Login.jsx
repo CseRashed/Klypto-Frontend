@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { FaLock, FaEnvelope, FaEye, FaEyeSlash } from "react-icons/fa";
 import { motion } from "framer-motion";
+import useAuth from "../../Hooks/useAuth"; // ✅ custom hook
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [particles, setParticles] = useState([]);
+  const { handleLogin } = useAuth(); // ✅ Auth functions
+  const navigate = useNavigate();
 
   // Generate particles for background
   useEffect(() => {
@@ -19,6 +22,16 @@ const Login = () => {
     }));
     setParticles(p);
   }, []);
+
+  // ✅ Handle Login Submit
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+    handleLogin(email, password);
+  };
+
+ 
 
   return (
     <div className="relative flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black p-4 overflow-hidden">
@@ -54,7 +67,7 @@ const Login = () => {
         </p>
 
         {/* Form */}
-        <form className="space-y-4 sm:space-y-5">
+        <form className="space-y-4 sm:space-y-5" onSubmit={handleSubmit}>
           {/* Email */}
           <div className="relative group">
             <FaEnvelope className="absolute top-3 left-3 text-gray-400 group-focus-within:text-blue-400 transition-colors" />
@@ -104,6 +117,7 @@ const Login = () => {
           {/* Login Button */}
           <motion.button
             whileTap={{ scale: 0.97 }}
+            type="submit"
             className="w-full bg-gradient-to-r from-purple-500 to-blue-500 text-white py-2.5 sm:py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl hover:opacity-95 transition-all duration-300"
           >
             Login
