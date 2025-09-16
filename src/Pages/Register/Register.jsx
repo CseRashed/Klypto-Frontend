@@ -35,12 +35,12 @@ const Register = () => {
   // Handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { email, password } = form;
+    const {name, email, password } = form;
     if (password.length < 6) {
       return Swal.fire("Error!", "Password must be at least 6 characters", "error");
     }
 
-    handleRegister(email, password)
+    handleRegister(name,email, password)
     
     
   }

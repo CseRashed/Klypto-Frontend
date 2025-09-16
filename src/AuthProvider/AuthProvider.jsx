@@ -14,75 +14,96 @@ export default function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // 🔹 Firebase error to human-readable message
-  const getFriendlyErrorMessage = (error) => {
-    switch (error.code) {
-      case "auth/email-already-in-use":
-        return "This email is already registered. Try logging in.";
-      case "auth/invalid-email":
-        return "The email address is invalid.";
-      case "auth/weak-password":
-        return "Password must be at least 6 characters.";
-      case "auth/user-not-found":
-        return "No account found with this email.";
-      case "auth/wrong-password":
-        return "Incorrect password. Please try again.";
-      case "auth/network-request-failed":
-        return "Network error. Please check your internet connection.";
-      default:
-        return error.message; // fallback
+// ✅ Register user + save to DB with human-readable error messages
+const handleRegister = async (name,email, password) => {
+  setLoading(true);
+  try {
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    const newUser = userCredential.user;
+    setUser(newUser);
+
+    // 🔥 Save user info to database (only for new users)
+    await fetch("http://localhost:5000/users", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name,
+        email: newUser.email,
+        createdAt: new Date().toISOString(),
+      }),
+    });
+
+    Swal.fire({
+      icon: "success",
+      title: "Registration Successful 🎉",
+      text: `Welcome, ${newUser.email}`,
+      timer: 2000,
+      showConfirmButton: false,
+    });
+  } catch (err) {
+    console.error("❌ Firebase or backend error:", err);
+
+    let errorMsg = "Registration failed!";
+    if (err.code === "auth/email-already-in-use") {
+      errorMsg = "This email is already registered.";
+    } else if (err.code === "auth/invalid-email") {
+      errorMsg = "Invalid email address.";
+    } else if (err.code === "auth/weak-password") {
+      errorMsg = "Password should be at least 6 characters.";
+    } else if (err.message) {
+      errorMsg = err.message;
     }
-  };
 
-  // ✅ Register user
-  const handleRegister = async (email, password) => {
-    setLoading(true);
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      setUser(userCredential.user);
+    Swal.fire("Error", errorMsg, "error");
+  } finally {
+    setLoading(false);
+  }
+};
 
-      Swal.fire({
-        icon: "success",
-        title: "Registration Successful 🎉",
-        text: `Welcome, ${userCredential.user.email}`,
-        timer: 2000,
-        showConfirmButton: false,
-      });
-    } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Registration Failed ❌",
-        text: getFriendlyErrorMessage(error),
-      });
-    } finally {
-      setLoading(false);
+// ✅ Login user (only Firebase check, no DB save)
+const handleLogin = async (email, password) => {
+  setLoading(true);
+  try {
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    setUser(userCredential.user);
+
+    Swal.fire({
+      icon: "success",
+      title: "Login Successful ✅",
+      text: `Welcome back, ${userCredential.user.email}`,
+      timer: 2000,
+      showConfirmButton: false,
+    });
+  } catch (err) {
+    console.error("❌ Login failed:", err);
+
+    // 🔹 Human-readable error messages
+    let errorMsg = "Login failed!";
+    if (err.code === "auth/user-not-found") {
+      errorMsg = "No account found with this email.";
+    } else if (err.code === "auth/wrong-password") {
+      errorMsg = "Incorrect password.";
+    } else if (err.code === "auth/invalid-email") {
+      errorMsg = "Invalid email format.";
+    } else {
+      errorMsg = "Email or Password is incorrect.";
     }
-  };
 
-  // ✅ Login user
-  const handleLogin = async (email, password) => {
-    setLoading(true);
-    try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      setUser(userCredential.user);
-
-      Swal.fire({
-        icon: "success",
-        title: "Login Successful ✅",
-        text: `Welcome back, ${userCredential.user.email}`,
-        timer: 2000,
-        showConfirmButton: false,
-      });
-    } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Login Failed ❌",
-        text: getFriendlyErrorMessage(error),
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
+    Swal.fire("Login Failed ❌", errorMsg, "error");
+  } finally {
+    setLoading(false);
+  }
+};
 
   // ✅ Logout user
   const handleLogout = async () => {
@@ -97,11 +118,7 @@ export default function AuthProvider({ children }) {
         showConfirmButton: false,
       });
     } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Logout Failed ❌",
-        text: getFriendlyErrorMessage(error),
-      });
+     
     } finally {
       setLoading(false);
     }
@@ -111,7 +128,6 @@ export default function AuthProvider({ children }) {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-      console.log(currentUser.email)
       setLoading(false);
     });
     return () => unsubscribe();

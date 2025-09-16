@@ -1,28 +1,69 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaEdit, FaSave } from "react-icons/fa";
+import Swal from "sweetalert2";
+import useAuth from "../../../Hooks/useAuth";
 
 export default function Profile() {
-  const [userData, setUserData] = useState({
-    name: "John Doe",
-    email: "john.doe@example.com",
-    phone: "+880 1234 567890",
-    image: "https://i.pravatar.cc/150?img=3",
-    street: "123 Main Street",
-    city: "Dhaka",
-    state: "Dhaka Division",
-    zip: "1207",
-    country: "Bangladesh",
-  });
-
+  const { user } = useAuth();
+  const [userInfo, setUserInfo] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
 
-  const handleSave = (e) => {
+  // Load user data from database
+  useEffect(() => {
+    if (user?.email) {
+      fetch(`${import.meta.env.VITE_API_URL}/users/${user.email}`)
+        .then((res) => res.json())
+        .then((data) => setUserInfo(data));
+    }
+  }, [user]);
+
+  // Handle Save / Update Profile
+  const handleSave = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
-    const updated = Object.fromEntries(formData.entries());
-    setUserData(updated);
-    setModalOpen(false);
+    const updatedData = Object.fromEntries(formData.entries());
+
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/users/${user.email}`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updatedData),
+        }
+      );
+
+      if (res.ok) {
+        const updatedUser = await res.json();
+        setUserInfo(updatedUser);
+        setModalOpen(false);
+
+        Swal.fire({
+          icon: "success",
+          title: "Profile Updated",
+          text: "Your profile has been successfully updated!",
+          timer: 2000,
+          showConfirmButton: false,
+        });
+      } else {
+        throw new Error("Failed to update user");
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Update Failed",
+        text: error.message,
+      });
+    }
   };
+
+  if (!userInfo) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <p className="text-lg text-gray-600 animate-pulse">Loading Profile...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-sky-50 via-white to-orange-50 py-10 px-4">
@@ -30,7 +71,7 @@ export default function Profile() {
       <div className="max-w-4xl mx-auto bg-white shadow-2xl rounded-2xl p-8 space-y-6">
         <div className="flex flex-col sm:flex-row items-center gap-8">
           <img
-            src={userData.image}
+            src={userInfo?.image}
             alt="User"
             className="w-40 h-40 rounded-full object-cover border-4 border-orange-300 shadow-md"
           />
@@ -40,7 +81,7 @@ export default function Profile() {
           </div>
           <button
             onClick={() => setModalOpen(true)}
-            className="btn btn-outline flex items-center gap-2"
+            className="flex items-center gap-2 px-4 py-2 rounded-full border border-orange-400 text-orange-600 font-semibold hover:bg-orange-50 hover:shadow-lg transition-all duration-200"
           >
             Edit <FaEdit />
           </button>
@@ -49,13 +90,19 @@ export default function Profile() {
         {/* Profile Info */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {[
-            { label: "Name", value: userData.name },
-            { label: "Email", value: userData.email },
-            { label: "Phone", value: userData.phone },
-            { label: "Image URL", value: userData.image },
+            { label: "Name", value: userInfo?.name || "Unknown" },
+            { label: "Email", value: userInfo?.email || "Unknown" },
+            { label: "Phone", value: userInfo?.phone || "Not Added" },
+            { label: "Street", value: userInfo?.street || "Not Added" },
+            { label: "City", value: userInfo?.city || "Not Added" },
+            { label: "State", value: userInfo?.state || "Not Added" },
+            { label: "Zip", value: userInfo?.zip || "Not Added" },
+            { label: "Country", value: userInfo?.country || "Not Added" },
           ].map((field, i) => (
             <div key={i}>
-              <label className="text-sm text-gray-600 font-semibold">{field.label}</label>
+              <label className="text-sm text-gray-600 font-semibold">
+                {field.label}
+              </label>
               <input
                 type="text"
                 value={field.value}
@@ -64,115 +111,53 @@ export default function Profile() {
               />
             </div>
           ))}
-
-          {/* Address */}
-          <div className="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
-            {[
-              { label: "Street Address", value: userData.street },
-              { label: "City", value: userData.city },
-              { label: "State / Province", value: userData.state },
-              { label: "ZIP / Postal Code", value: userData.zip },
-              { label: "Country", value: userData.country, span: 2 },
-            ].map((field, i) => (
-              <div key={i} className={field.span ? "md:col-span-2" : ""}>
-                <label className="text-sm text-gray-600 font-semibold">{field.label}</label>
-                <input
-                  type="text"
-                  value={field.value}
-                  disabled
-                  className="w-full mt-2 px-4 py-2 rounded-xl border bg-gray-100 text-gray-600 cursor-not-allowed"
-                />
-              </div>
-            ))}
-          </div>
         </div>
       </div>
 
-      {/* Custom Modal */}
+      {/* Responsive Modal */}
       {modalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
-          <div className="bg-white w-full max-w-2xl rounded-2xl shadow-2xl p-6 relative">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm p-4 overflow-auto">
+          <div className="bg-white w-full max-w-2xl rounded-2xl shadow-2xl p-6 relative overflow-y-auto max-h-[90vh]">
             {/* Close Button */}
             <button
               onClick={() => setModalOpen(false)}
-              className="absolute right-4 top-4 text-gray-500 hover:text-gray-800 text-lg font-bold"
+              className="absolute right-4 top-4 text-gray-500 hover:text-gray-800 text-lg font-bold transition"
             >
               ✕
             </button>
 
-            <h3 className="text-2xl font-bold mb-6 text-gray-800">Edit Profile</h3>
+            <h3 className="text-2xl font-bold mb-6 text-gray-800">
+              Edit Profile
+            </h3>
 
             <form
               onSubmit={handleSave}
               className="grid grid-cols-1 md:grid-cols-2 gap-6"
             >
-              <input
-                type="text"
-                name="name"
-                defaultValue={userData.name}
-                placeholder="Name"
-                className="w-full px-4 py-2 rounded-xl border focus:ring-2 focus:ring-orange-400"
-              />
-              <input
-                type="email"
-                name="email"
-                defaultValue={userData.email}
-                placeholder="Email"
-                className="w-full px-4 py-2 rounded-xl border focus:ring-2 focus:ring-orange-400"
-              />
-              <input
-                type="text"
-                name="phone"
-                defaultValue={userData.phone}
-                placeholder="Phone"
-                className="w-full px-4 py-2 rounded-xl border focus:ring-2 focus:ring-orange-400"
-              />
-              <input
-                type="text"
-                name="image"
-                defaultValue={userData.image}
-                placeholder="Profile Image URL"
-                className="w-full px-4 py-2 rounded-xl border focus:ring-2 focus:ring-orange-400"
-              />
-              <input
-                type="text"
-                name="street"
-                defaultValue={userData.street}
-                placeholder="Street Address"
-                className="w-full px-4 py-2 rounded-xl border focus:ring-2 focus:ring-orange-400"
-              />
-              <input
-                type="text"
-                name="city"
-                defaultValue={userData.city}
-                placeholder="City"
-                className="w-full px-4 py-2 rounded-xl border focus:ring-2 focus:ring-orange-400"
-              />
-              <input
-                type="text"
-                name="state"
-                defaultValue={userData.state}
-                placeholder="State / Province"
-                className="w-full px-4 py-2 rounded-xl border focus:ring-2 focus:ring-orange-400"
-              />
-              <input
-                type="text"
-                name="zip"
-                defaultValue={userData.zip}
-                placeholder="ZIP / Postal Code"
-                className="w-full px-4 py-2 rounded-xl border focus:ring-2 focus:ring-orange-400"
-              />
-              <input
-                type="text"
-                name="country"
-                defaultValue={userData.country}
-                placeholder="Country"
-                className="w-full px-4 py-2 rounded-xl border focus:ring-2 focus:ring-orange-400"
-              />
+              {[
+                { name: "name", placeholder: "Name" },
+                { name: "email", placeholder: "Email", type: "email" },
+                { name: "phone", placeholder: "Phone" },
+                { name: "image", placeholder: "Profile Image URL" },
+                { name: "street", placeholder: "Street Address" },
+                { name: "city", placeholder: "City" },
+                { name: "state", placeholder: "State / Province" },
+                { name: "zip", placeholder: "ZIP / Postal Code" },
+                { name: "country", placeholder: "Country" },
+              ].map((field, i) => (
+                <input
+                  key={i}
+                  type={field.type || "text"}
+                  name={field.name}
+                  defaultValue={userInfo[field.name]}
+                  placeholder={field.placeholder}
+                  className="w-full px-4 py-2 rounded-xl border focus:ring-2 focus:ring-orange-400 transition-all duration-200"
+                />
+              ))}
 
               <button
                 type="submit"
-                className="btn btn-primary flex items-center gap-2 text-lg mt-4 col-span-1 md:col-span-2 justify-center"
+                className="col-span-1 md:col-span-2 flex items-center justify-center gap-2 mt-4 px-6 py-3 bg-orange-500 text-white rounded-full font-semibold hover:bg-orange-600 hover:shadow-lg transition-all duration-200"
               >
                 Save <FaSave />
               </button>

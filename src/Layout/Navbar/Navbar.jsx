@@ -16,7 +16,10 @@ export default function Navbar() {
   const [cartOpen, setCartOpen] = useState(false);
   const [carts, setCarts] = useState([]);
   const navigate = useNavigate();
-  const { user } = useAuth()
+  const { user,handleLogout } = useAuth()
+ const handleUserLogOut=()=>{
+    handleLogout()
+  }
   // console.log(user)
   // ✅ Fetch cart items only once when component mounts
   useEffect(() => {
@@ -144,7 +147,7 @@ export default function Navbar() {
       {/* Profile Drawer */}
       <Drawer anchor="right" open={profileOpen} onClose={toggleProfileDrawer(false)}> <div className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg h-full flex flex-col bg-white/90 backdrop-blur-lg shadow-xl"> {/* Header */} <div className="flex items-center justify-between p-4 sm:p-5 border-b bg-blue-900 text-white"> <h2 className="text-base sm:text-lg md:text-xl font-semibold">My Account</h2> <button onClick={toggleProfileDrawer(false)} className="hover:scale-110 transition-transform" > ✕ </button> </div> {/* User Info */} <div className="flex items-center gap-3 sm:gap-4 p-4 border-b bg-white"> <img src="https://i.pravatar.cc/100" alt="User Avatar" className="w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-blue-500 shadow-md" /> <div> <h3 className="font-semibold text-gray-800 text-sm sm:text-base md:text-lg">John Doe</h3> <p className="text-xs sm:text-sm text-gray-500">johndoe@email.com</p> </div> </div> {/* Menu Items */} <nav className="flex-1 flex flex-col p-3 sm:p-4 gap-1 sm:gap-2 overflow-y-auto"> {[{ icon: <User size={18} />, label: "My Profile", route: "/profile" }, { icon: <Bell size={18} />, label: "Dashboard", route: "/dashboard" }, { icon: <ShoppingBag size={18} />, label: "My Orders", route: "/myOrder" }, { icon: <Bell size={18} />, label: "Notifications", route: "/notifications" }, { icon: <Bell size={18} />, label: "Products", route: "/products" }, { icon: <CreditCard size={18} />, label: "Payment Methods", route: "/payments" }, { icon: <HelpCircle size={18} />, label: "Analytics", route: "/analytics" }, { icon: <HelpCircle size={18} />, label: "Offers", route: "/offers" }, { icon: <HelpCircle size={18} />, label: "Users", route: "/users" }, { icon: <HelpCircle size={18} />, label: "Orders", route: "/orders" }, { icon: <HelpCircle size={18} />, label: "Sales", route: "/sales" }, { icon: <HelpCircle size={18} />, label: "My Review", route: "/reviews" }, { icon: <HelpCircle size={18} />, label: "Reports", route: "/reports" }, { icon: <HelpCircle size={18} />, label: "Support", route: "/support" }, { icon: <HelpCircle size={18} />, label: "System Settings", route: "/settings" },].map((item, i) => (<button key={i} onClick={() => item.route && navigate(item.route)} className="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 text-sm font-medium hover:bg-gradient-to-r hover:from-blue-50 hover:to-blue-100 hover:text-blue-700 transition-all group" > <span className="text-gray-500 group-hover:text-blue-600">{item.icon}</span> {item.label} </button>))} </nav> {/* Divider */} <div className="border-t mx-3"></div> {/* Auth Buttons */} <div className="p-3 flex flex-col gap-2">   {user?.email ? (
   <button
-    // ekhane logout function add korte hobe
+    onClick={handleUserLogOut} // ekhane logout function add korte hobe
     className="w-full flex items-center justify-center gap-2 rounded-full py-2 text-red-600 hover:bg-red-50 transition"
   >
   Logout
