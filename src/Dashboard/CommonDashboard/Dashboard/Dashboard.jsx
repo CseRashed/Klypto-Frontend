@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Bell,
   Users,
@@ -17,6 +17,14 @@ import useUsers from "../../../Hooks/useUsers";
 const Dashboard = () => {
   const [darkMode, setDarkMode] = useState(false);
   const { users, isLoading, isError } = useUsers()
+ const [order, setOrder] = useState([]);
+
+useEffect(() => {
+  fetch(`${import.meta.env.VITE_API_URL}/orders`)
+    .then((res) => res.json())
+    .then((data) => setOrder(data))
+    .catch((err) => console.error("Error fetching orders:", err));
+}, []);
 
 
   // console.log(users)
@@ -73,7 +81,7 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         {[
           { title: "Total Users", value: `${users.length}`, icon: <Users size={26} />, color: "bg-blue-500" },
-          { title: "Total Orders", value: "3,582", icon: <Package size={26} />, color: "bg-green-500" },
+          { title: "Total Orders", value: `${order.length}`, icon: <Package size={26} />, color: "bg-green-500" },
           { title: "Revenue", value: "$24,560", icon: <DollarSign size={26} />, color: "bg-purple-500" },
           { title: "Support Tickets", value: "76", icon: <Headphones size={26} />, color: "bg-orange-500" },
         ].map((card, index) => (
