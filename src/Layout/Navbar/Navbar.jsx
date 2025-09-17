@@ -219,7 +219,15 @@ export default function Navbar() {
               <span className="font-bold text-lg">Total:</span>
               <span className="font-bold text-lg text-green-600">${total}</span>
             </div>
-            <Link to="/checkout" className="block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-full transition-all">Checkout</Link>
+           {user && carts.length>0 && (
+  <Link
+    to="/checkout"
+    className="block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-full transition-all"
+  >
+    Checkout
+  </Link>
+)}
+
           </div>
         </motion.div>
       </Drawer>
